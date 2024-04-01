@@ -1,27 +1,91 @@
 \documentclass{dcbl/challenge}
 
-\setdoctitle{Der Titel meines Dokuments}
+\setdoctitle{Shell-Scripts}
 \setdocauthor{Stephan Bökelmann}
 \setdocemail{sboekelmann@ep1.rub.de}
 \setdocinstitute{AG Physik der Hadronen und Kerne}
 
+\usepackage{hyperref}
+\usepackage{listings}
+
 
 \begin{document}
 
-Jedes Challenge-Blatt beginnt mit einer kurzen Einleitung, die einen Kontext für den jeweiligen Zettel setzt. 
+The term operating system meant everything and nothing in the days before Unix.
+Due to this, the term OS wasn't actually used that much in reference to Unix in the beginning, but rather the term programming-environment.
+Manipulating streams of data is one of the most commonly done tasks in programming.
+A whole plathora of stream manipulations can be done in just a single line of shell-commands, but in order to keep them reproducible, we'd like to save them for later.
+This is what shell-scripts are for and thus we will also start our programming journey with shell-scripts.
 
-\section*{Aufgaben}
+
+\section*{Exercises}
 \begin{aufgabe}
-    Löse die Gleichung $x^2 - 5x + 6 = 0$.
+    Navigate to your home directory and run create a new directory called \texttt{myScripts}.
+    Navigate into this directory and create a new file called \texttt{hello}.
+    Open this file and add the following content: \texttt{echo "Hello World!"}.
+    Save and close the file.
+    Run the file by executing the following command \texttt{bash hello}.
+    We run a new shell explicitly by calling \texttt{bash} and hand it the name of the file \texttt{hello} as a parameter.
 \end{aufgabe}
 
-\begin{aufgabe}[Für Fortgeschrittene]
-    Beweise den Satz des Pythagoras.
+\begin{aufgabe}
+    Since we already run a shell-session, we don't always want to write the \texttt{bash} command every time.
+    Instead, we can make sure, that our shell understands, that this is an executable program, by adding a line to the file and changing it's metainformation.
+    Open the script file and add the following content to be the first line: \texttt{\#!/bin/bash}.
+    The so called \textit{shebang} tells the shell, which program is able to execute this script.
+    Save and close the file.
+    Furthermore, we have to make this script executable by changing the metainformation.
+    Run \texttt{ls -ls > before} in the directory, then \texttt{chmod +x hello}, then \texttt{ls -la > after}. 
+    Use \texttt{vimdiff before after} to inspect the differences.
+    Close \texttt{vimdiff} by using the \texttt{:q}-command two times.
+    Try running \texttt{./hello}.
+    Now we don't need to type the \texttt{bash} command every time.
 \end{aufgabe}
 
-\section*{Anmerkungen}
+\begin{aufgabe}
+    This works quite well for us, but we'd like to get rid of the \texttt{./} in front of our command. 
+    Use the command \texttt{echo \$PATH}, to print the so called path-variable to your console.
+    \texttt{\$PATH} is the variable that contains all the directories, where executable scripts might be found automatically by the shell.
+    Let's add our current path to this environment-variable to be able to run our script without the need of \texttt{./}.
+    Therefore we first save our current path in an extra variable called \texttt{scriptpath} by running \texttt{export SCRIPTPATH=\$(pwd)}. 
+    This will execute the command \texttt{pwd} and save the result in the variable \texttt{scriptpath}.
+    Look at the variable by running \texttt{echo \${scriptpath}}.
+    Now we want to make sure, that our script-path is appended to the actual path.
+    Therefore we run \texttt{export PATH=\$PATH:\$SCRIPTPATH}. 
+    The colon is used as a separator between the paths in the variable.
+    We set the new path to be the old path plus the scriptpath, and print it out again.
+    Let's see the result by running \texttt{echo \$PATH}.
+    Try running \texttt{hello} without the need of \texttt{./}.
+\end{aufgabe}
+
+\begin{aufgabe}
+    Close your shell and open a new one.
+    Print your path-variable by running \texttt{echo \$PATH}.
+    You will see, that the changes have been lost. 
+    They were only added in a temporary session. 
+    In order to set the path permanently, we need to modify the standard configuration of our shell-sessions. 
+    This is done by editing the file \texttt{$\sim$/.bashrc}.
+    Open the file in a text-editor and add the following line at the bottom: \texttt{export PATH=\$PATH:<actual scriptpath>}.
+    Make sure to replace <actual scriptpath> with the path where the script is located.
+    \texttt{$\sim$/.bashrc} is the so called run-command-file, which is stored in the user's home-directory and will be loaded on every shell-session of this particular user.
+\end{aufgabe}
+
+\begin{aufgabe}
+    We may also call a shell-script with arguments. 
+    Go back to your directory \texttt{myScripts} and create a new file called \texttt{sum}.
+    Open the file and add the following content:\\
+    \begin{lstlisting}[language=bash, caption=Beispiel Shell-Script]
+        #!/bin/bash
+        sum=$(($1+$2))
+        echo $sum
+    \end{lstlisting}
+    Save and close the file.
+    Run \texttt{./sum 3 5} to see the result.
+\end{aufgabe}
+
+\section*{Annotations}
 \begin{enumerate}
-    \item Link zu einem YouTube-Video: \url{https://www.youtube.com}
+    \item Book - The Unix Programming Environment: \href{https://www.amazon.com/-/de/dp/013937681X/ref=sr_1_1?crid=ZKV5OYC7B2XL&dib=eyJ2IjoiMSJ9.v5CMlrbXxKNhJIQ9iZvGeMZy7oFDdqBAnw6zl2-EzGCqPGxoH4dg4ufJ-uftq4__sS0dCnpEB3K6Ww_pbnsU57rcy8_4TXWXlW46DnHlNz3fRD7c1IKeLKYl93tlUhbze1Ll_8DWYLieGNRjMVBKfgPas9NEc79Q4YjI42-E7COCtA0TdsFaelwsNb-URkEx7sGlIM5XiiyM5YNLV4c90m2HcTzFKltwxrYPxnpVXhw.mRUMSZNTrIguh4aCuI0kzn2jBvh6KKybz4atkIP2hxw&dib_tag=se&keywords=unix+programming+environment&qid=1711993814&sprefix=unix+programmi\%2Caps\%2C313&sr=8-1}{Amazon-Link}
 \end{enumerate}
 
 \end{document}
