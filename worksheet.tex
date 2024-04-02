@@ -47,9 +47,9 @@ This is what shell-scripts are for and thus we will also start our programming j
     Use the command \texttt{echo \$PATH}, to print the so called path-variable to your console.
     \texttt{\$PATH} is the variable that contains all the directories, where executable scripts might be found automatically by the shell.
     Let's add our current path to this environment-variable to be able to run our script without the need of \texttt{./}.
-    Therefore we first save our current path in an extra variable called \texttt{scriptpath} by running \texttt{export SCRIPTPATH=\$(pwd)}. 
-    This will execute the command \texttt{pwd} and save the result in the variable \texttt{scriptpath}.
-    Look at the variable by running \texttt{echo \${scriptpath}}.
+    Therefore we first save our current path in an extra variable called \texttt{SCRIPTPATH} by running \texttt{export SCRIPTPATH=\$(pwd)}. 
+    This will execute the command \texttt{pwd} and save the result in the variable \texttt{SCRIPTPATH}.
+    Look at the variable by running \texttt{echo \${SCRIPTPATH}}.
     Now we want to make sure, that our script-path is appended to the actual path.
     Therefore we run \texttt{export PATH=\$PATH:\$SCRIPTPATH}. 
     The colon is used as a separator between the paths in the variable.
@@ -80,6 +80,7 @@ This is what shell-scripts are for and thus we will also start our programming j
         echo $sum
     \end{lstlisting}
     Save and close the file.
+	Make it executable by using the \texttt{sudo chmod +x ./sum} command, which adds the execution-permission to the file.
     Run \texttt{./sum 3 5} to see the result.
 \end{aufgabe}
 
